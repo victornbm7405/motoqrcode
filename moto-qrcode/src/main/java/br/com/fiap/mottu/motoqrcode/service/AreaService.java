@@ -21,6 +21,10 @@ public class AreaService {
                 .orElseThrow(() -> new RuntimeException("Área não encontrada"));
     }
 
+    public Area salvar(Area area) {
+        return repository.save(area);
+    }
+
     public void selecionarArea(Long id) {
         this.areaAtiva = buscarPorId(id);
         System.out.println("Área ativa selecionada: " + areaAtiva.getNome());

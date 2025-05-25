@@ -17,6 +17,7 @@ public class Area {
     private String nome;
 
     // Getters e Setters
+
     public Long getId() {
         return id;
     }

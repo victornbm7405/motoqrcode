@@ -22,6 +22,11 @@ public class AreaController {
         return service.listarTodas();
     }
 
+    @PostMapping
+    public Area criar(@RequestBody Area area) {
+        return service.salvar(area);
+    }
+
     @PostMapping("/selecionar/{id}")
     public void selecionar(@PathVariable Long id) {
         service.selecionarArea(id);
