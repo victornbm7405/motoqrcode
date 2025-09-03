@@ -101,7 +101,7 @@ public class QRCodeToggleScanner {
                 }
 
             } catch (NotFoundException e) {
-                // Continua procurando QR Code
+                // continuar procurando QR Code
             } catch (Exception e) {
                 e.printStackTrace();
                 JOptionPane.showMessageDialog(window, "❌ Erro: " + e.getMessage());
