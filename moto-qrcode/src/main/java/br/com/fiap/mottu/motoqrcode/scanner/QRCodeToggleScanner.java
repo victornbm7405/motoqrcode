@@ -71,7 +71,7 @@ public class QRCodeToggleScanner {
                     System.out.println("- Placa: " + placa);
                     System.out.println("- Modelo: " + modelo);
 
-                    // 👉 Preparar requisição POST
+                    // 👉 teste requisição POST
                     String jsonBody = String.format(
                             "{\"placa\":\"%s\", \"modelo\":\"%s\"}",
                             placa, modelo
