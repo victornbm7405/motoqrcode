@@ -42,7 +42,7 @@ public class QRCodeToggleScanner {
         window.pack();
         window.setVisible(true);
 
-        System.out.println("Aponte o QR Code da moto para a câmera...");
+        System.out.println("Aponte o QR Code da moto para a cÃ¢mera...");
 
         while (true) {
             BufferedImage image = webcam.getImage();
@@ -59,19 +59,19 @@ public class QRCodeToggleScanner {
 
                 if (result != null) {
                     String qrContent = result.getText();
-                    System.out.println("✅ QR Code lido: " + qrContent);
+                    System.out.println("âœ… QR Code lido: " + qrContent);
 
-                    // 👉 Interpretar o JSON lido
+                    // ðŸ‘‰ Interpretar o JSON lido
                     JSONObject json = new JSONObject(qrContent);
 
                     String placa = json.getString("placa");
                     String modelo = json.getString("modelo");
 
-                    System.out.println("📄 Dados extraídos:");
+                    System.out.println("ðŸ“„ Dados extraÃ­dos:");
                     System.out.println("- Placa: " + placa);
                     System.out.println("- Modelo: " + modelo);
 
-                    // 👉 teste requisição POST
+                    // ðŸ‘‰ teste requisiÃ§Ã£o POST
                     String jsonBody = String.format(
                             "{\"placa\":\"%s\", \"modelo\":\"%s\"}",
                             placa, modelo
@@ -88,28 +88,28 @@ public class QRCodeToggleScanner {
                     HttpResponse<String> postResponse = client.send(postRequest, HttpResponse.BodyHandlers.ofString());
 
                     if (postResponse.statusCode() == 200 || postResponse.statusCode() == 201) {
-                        System.out.println("✅ Moto cadastrada com sucesso! Status: " + postResponse.statusCode());
+                        System.out.println("âœ… Moto cadastrada com sucesso! Status: " + postResponse.statusCode());
                         JOptionPane.showMessageDialog(window,
-                                "✅ Moto cadastrada com sucesso!\nPlaca: " + placa + "\nModelo: " + modelo);
+                                "âœ… Moto cadastrada com sucesso!\nPlaca: " + placa + "\nModelo: " + modelo);
                     } else {
-                        System.out.println("❌ Erro ao cadastrar. Status: " + postResponse.statusCode());
+                        System.out.println("âŒ Erro ao cadastrar. Status: " + postResponse.statusCode());
                         JOptionPane.showMessageDialog(window,
-                                "❌ Erro ao cadastrar moto.\nStatus: " + postResponse.statusCode());
+                                "âŒ Erro ao cadastrar moto.\nStatus: " + postResponse.statusCode());
                     }
 
-                    break; // Sai do loop após ler e cadastrar
+                    break; // Sai do loop apÃ³s ler e cadastrar
                 }
 
             } catch (NotFoundException e) {
                 // continuar procurando QR Code
             } catch (Exception e) {
                 e.printStackTrace();
-                JOptionPane.showMessageDialog(window, "❌ Erro: " + e.getMessage());
+                JOptionPane.showMessageDialog(window, "âŒ Erro: " + e.getMessage());
             }
         }
 
         webcam.close();
         window.dispose();
-        System.out.println("📸 Scanner encerrado.");
+        System.out.println("ðŸ“¸ Scanner encerrado.");
     }
 }

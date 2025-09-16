@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -16,7 +16,7 @@
 	<artifactId>moto-qrcode</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>moto-qrcode</name>
-	<description>Protótipo para leitura de QR Code de motos - Challenge Mottu</description>
+	<description>ProtÃ³tipo para leitura de QR Code de motos - Challenge Mottu</description>
 
 	<properties>
 		<java.version>17</java.version>
@@ -29,13 +29,21 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.34</version> <!-- ou a mais recente -->
+			<scope>provided</scope>
+		</dependency>
+
+
 		<!-- JPA + Banco de Dados -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 
-		<!-- Validações com Bean Validation -->
+		<!-- ValidaÃ§Ãµes com Bean Validation -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
@@ -57,10 +65,6 @@
 			<systemPath>C:/Users/Modesto/Downloads/moto-qrcode/lib/ojdbc11.jar</systemPath>
 		</dependency>
 
-
-
-
-		<!-- Testes (você pode remover se não for usar) -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -93,9 +97,12 @@
 		</dependency>
 
 
-	</dependencies>
+	    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-thymeleaf</artifactId>
+    </dependency>
+  </dependencies>
 
-	<!-- Repositório Oracle -->
 	<repositories>
 		<repository>
 			<id>oracle</id>
@@ -113,3 +120,4 @@
 	</build>
 
 </project>
+

@@ -18,7 +18,7 @@ public class AreaService {
 
     public Area buscarPorId(Long id) {
         return repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Área não encontrada"));
+                .orElseThrow(() -> new RuntimeException("Ãrea nÃ£o encontrada"));
     }
 
     public Area salvar(Area area) {
@@ -27,19 +27,19 @@ public class AreaService {
 
     public void selecionarArea(Long id) {
         this.areaAtiva = buscarPorId(id);
-        System.out.println("Área ativa selecionada: " + areaAtiva.getNome());
+        System.out.println("Ãrea ativa selecionada: " + areaAtiva.getNome());
     }
 
     public Area getAreaAtiva() {
         if (areaAtiva == null) {
-            throw new RuntimeException("Nenhuma área foi selecionada ainda");
+            throw new RuntimeException("Nenhuma Ã¡rea foi selecionada ainda");
         }
         return areaAtiva;
     }
 
     public List<Area> listarTodas() {
         List<Area> todas = repository.findAll();
-        System.out.println("Áreas disponíveis no banco:");
+        System.out.println("Ãreas disponÃ­veis no banco:");
         todas.forEach(a -> System.out.println("- ID: " + a.getId() + " | Nome: " + a.getNome()));
         return todas;
     }

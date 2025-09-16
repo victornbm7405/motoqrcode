@@ -4,7 +4,7 @@ public class MotoDTO {
 
     private String placa;
     private String modelo;
-    private Long idArea; // Usado apenas no cadastro padrão, NÃO no QR Code
+    private Long idArea; // Usado apenas no cadastro padrÃ£o, NÃƒO no QR Code
 
     public String getPlaca() {
         return placa;

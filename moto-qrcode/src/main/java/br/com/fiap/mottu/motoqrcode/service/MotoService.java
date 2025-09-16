@@ -28,7 +28,7 @@ public class MotoService {
         moto.setModelo(dto.getModelo());
 
         Area area = areaRepository.findById(dto.getIdArea())
-                .orElseThrow(() -> new RuntimeException("Área não encontrada"));
+                .orElseThrow(() -> new RuntimeException("Ãrea nÃ£o encontrada"));
 
         moto.setArea(area);
 
@@ -48,13 +48,13 @@ public class MotoService {
 
     public Moto atualizar(Long id, MotoDTO dto) {
         Moto moto = motoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Moto não encontrada"));
+                .orElseThrow(() -> new RuntimeException("Moto nÃ£o encontrada"));
 
         moto.setPlaca(dto.getPlaca());
         moto.setModelo(dto.getModelo());
 
         Area area = areaRepository.findById(dto.getIdArea())
-                .orElseThrow(() -> new RuntimeException("Área não encontrada"));
+                .orElseThrow(() -> new RuntimeException("Ãrea nÃ£o encontrada"));
 
         moto.setArea(area);
 

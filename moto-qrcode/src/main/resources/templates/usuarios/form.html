@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: head(${titulo} ?: 'Formulário')"></head>
+<body>
+<header th:replace="fragments/navbar :: navbar"></header>
+
+<main class="container">
+  <h1 th:text="${titulo} ?: 'Usuário'">Usuário</h1>
+
+  <form th:action="${#strings.contains(titulo,'Editar')} ? @{'/usuarios/' + ${usuario.id} + '/editar'} : @{/usuarios}"
+        th:object="${usuario}" method="post">
+    <input type="hidden" th:name="${_csrf?.parameterName}" th:value="${_csrf?.token}">
+    <div>
+      <label>Username</label>
+      <input th:field="*{username}" placeholder="ex.: victor"/>
+      <small th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Erro</small>
+    </div>
+
+    <div>
+      <label>Senha</label>
+      <input th:field="*{password}" type="password" placeholder="senha"/>
+      <small th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Erro</small>
+    </div>
+
+    <div>
+      <label>Role</label>
+      <select th:field="*{role}">
+        <option value="USER">USER</option>
+        <option value="ADMIN">ADMIN</option>
+      </select>
+      <small th:if="${#fields.hasErrors('role')}" th:errors="*{role}">Erro</small>
+    </div>
+
+    <button type="submit">Salvar</button>
+    <a th:href="@{/usuarios}">Cancelar</a>
+  </form>
+</main>
+
+<footer th:replace="fragments/footer :: footer"></footer>
+</body>
+</html>

@@ -1,0 +1,12 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: head('Início')"></head>
+<body>
+<header th:replace="fragments/navbar :: navbar"></header>
+<main class="container">
+  <h1>Projeto Mottu – Demo Thymeleaf</h1>
+  <p>Acesse <a th:href="@{/usuarios}">Usuários</a> para ver o CRUD completo.</p>
+</main>
+<footer th:replace="fragments/footer :: footer"></footer>
+</body>
+</html>
