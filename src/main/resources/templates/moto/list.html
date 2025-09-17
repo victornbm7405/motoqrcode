@@ -1,0 +1,26 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Motos</title>
+</head>
+<body>
+    <div th:replace="fragments/menu :: *"></div>
+    <h2>Lista de Motos</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Placa</th>
+                <th>Area</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="moto : ${motos}">
+                <td th:text="${moto.id}"></td>
+                <td th:text="${moto.placa}"></td>
+                <td th:text="${moto.area.nome}"></td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

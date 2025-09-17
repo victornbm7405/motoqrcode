@@ -1,12 +1,26 @@
 ﻿<!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/header :: head('Início')"></head>
+<head>
+  <meta charset="UTF-8">
+  <title>Início</title>
+  <link rel="stylesheet" th:href="@{/css/main.css}">
+</head>
 <body>
-<header th:replace="fragments/navbar :: navbar"></header>
+
 <main class="container">
-  <h1>Projeto Mottu – Demo Thymeleaf</h1>
-  <p>Acesse <a th:href="@{/usuarios}">Usuários</a> para ver o CRUD completo.</p>
+  <h1>Bem-vindo ao Moto QRCode</h1>
+  <p>Gerencie áreas e motos de forma prática.</p>
+
+  <ul>
+    <li><a th:href="@{/usuarios}">Usuários</a></li>
+    <li><a th:href="@{/web/areas}">Áreas</a></li>
+    <li><a th:href="@{/web/motos}">Motos</a></li>
+  </ul>
+
 </main>
-<footer th:replace="fragments/footer :: footer"></footer>
+
+<div class="footer">
+  <p>© 2025 Moto QRCode</p>
+</div>
 </body>
 </html>

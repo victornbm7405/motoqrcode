@@ -1,0 +1,24 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Areas</title>
+</head>
+<body>
+    <div th:replace="fragments/menu :: *"></div>
+    <h2>Lista de Areas</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="area : ${areas}">
+                <td th:text="${area.id}"></td>
+                <td th:text="${area.nome}"></td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

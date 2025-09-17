@@ -1,0 +1,21 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Nova Moto</title>
+</head>
+<body>
+    <div th:replace="fragments/menu :: *"></div>
+    <h2>Cadastrar Nova Moto</h2>
+    <form th:action="@{/motos}" method="post" th:object="${moto}">
+        <label>Placa: <input type="text" th:field="*{placa}" /></label>
+        <label>Area:
+            <select th:field="*{area.id}">
+                <option th:each="area : ${areas}" 
+                        th:value="${area.id}" 
+                        th:text="${area.nome}"></option>
+            </select>
+        </label>
+        <button type="submit">Salvar</button>
+    </form>
+</body>
+</html>

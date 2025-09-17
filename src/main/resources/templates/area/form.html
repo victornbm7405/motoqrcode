@@ -1,0 +1,14 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Nova Area</title>
+</head>
+<body>
+    <div th:replace="fragments/menu :: *"></div>
+    <h2>Cadastrar Nova Area</h2>
+    <form th:action="@{/areas}" method="post" th:object="${area}">
+        <label>Nome: <input type="text" th:field="*{nome}" /></label>
+        <button type="submit">Salvar</button>
+    </form>
+</body>
+</html>

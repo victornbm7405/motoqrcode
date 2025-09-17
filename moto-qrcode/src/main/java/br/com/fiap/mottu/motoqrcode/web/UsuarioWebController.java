@@ -25,7 +25,7 @@ public class UsuarioWebController {
     @GetMapping("/novo")
     public String novo(Model model) {
         model.addAttribute("usuario", new Usuario());
-        model.addAttribute("titulo", "Novo Usuário");
+        model.addAttribute("titulo", "Novo UsuÃ¡rio");
         return "usuarios/form";
     }
 
@@ -35,15 +35,15 @@ public class UsuarioWebController {
                         RedirectAttributes ra) {
         if (br.hasErrors()) return "usuarios/form";
         repo.save(usuario);
-        ra.addFlashAttribute("msg", "Usuário criado com sucesso!");
+        ra.addFlashAttribute("msg", "UsuÃ¡rio criado com sucesso!");
         return "redirect:/usuarios";
     }
 
     @GetMapping("/{id}/editar")
     public String editar(@PathVariable Long id, Model model) {
-        Usuario u = repo.findById(id).orElseThrow(() -> new IllegalArgumentException("ID inválido"));
+        Usuario u = repo.findById(id).orElseThrow(() -> new IllegalArgumentException("ID invÃ¡lido"));
         model.addAttribute("usuario", u);
-        model.addAttribute("titulo", "Editar Usuário");
+        model.addAttribute("titulo", "Editar UsuÃ¡rio");
         return "usuarios/form";
     }
 
@@ -55,14 +55,14 @@ public class UsuarioWebController {
         if (br.hasErrors()) return "usuarios/form";
         usuario.setId(id);
         repo.save(usuario);
-        ra.addFlashAttribute("msg", "Usuário atualizado com sucesso!");
+        ra.addFlashAttribute("msg", "UsuÃ¡rio atualizado com sucesso!");
         return "redirect:/usuarios";
     }
 
     @PostMapping("/{id}/excluir")
     public String excluir(@PathVariable Long id, RedirectAttributes ra) {
         repo.deleteById(id);
-        ra.addFlashAttribute("msg", "Usuário excluído!");
+        ra.addFlashAttribute("msg", "UsuÃ¡rio excluÃ­do!");
         return "redirect:/usuarios";
     }
 }

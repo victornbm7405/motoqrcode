@@ -1,5 +1,10 @@
-﻿<nav th:fragment="navbar" class="nav">
-  <a th:href="@{/}">Início</a>
-  <a th:href="@{/usuarios}">Usuários</a>
-  <a th:href="@{/usuarios/novo}">Novo Usuário</a>
-</nav>
+﻿<div th:fragment="navbar">
+  <nav>
+    <ul>
+      <li><a th:href="@{/}">Início</a></li>
+      <li><a th:href="@{/usuarios}">Usuários</a></li>
+      <li><a th:href="@{/web/areas}">Áreas</a></li>
+      <li><a th:href="@{/web/motos}">Motos</a></li>
+    </ul>
+  </nav>
+</div>

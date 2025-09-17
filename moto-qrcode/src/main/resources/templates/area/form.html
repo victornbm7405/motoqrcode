@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${titulo} ?: 'Formulário de Área'">Formulário de Área</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <th:block th:replace="~{fragments/header :: head(${titulo} ?: 'Formulário de Área')}"></th:block>
+</head>
+<body>
+<th:block th:replace="~{fragments/navbar :: navbar}"></th:block>
+
+<main>
+    <h1 th:text="${titulo} ?: 'Nova Área'"></h1>
+    <form th:action="@{/areas}" th:object="${area}" method="post">
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" th:field="*{nome}" />
+
+        <button type="submit">Salvar</button>
+    </form>
+</main>
+
+<th:block th:replace="~{fragments/footer :: footer}"></th:block>
+</body>
+</html>

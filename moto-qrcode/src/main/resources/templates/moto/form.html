@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title th:text="${titulo} ?: 'Formulário de Moto'">Formulário de Moto</title>
+  <link rel="stylesheet" th:href="@{/css/main.css}">
+  <th:block th:replace="~{fragments/header :: head(${titulo} ?: 'Formulário de Moto')}"></th:block>
+</head>
+<body>
+<th:block th:replace="~{fragments/navbar :: navbar}"></th:block>
+
+<main>
+  <h1 th:text="${titulo} ?: 'Nova Moto'"></h1>
+  <form th:action="@{/motos}" th:object="${moto}" method="post">
+    <label for="placa">Placa:</label>
+    <input type="text" id="placa" th:field="*{placa}" />
+
+    <label for="modelo">Modelo:</label>
+    <input type="text" id="modelo" th:field="*{modelo}" />
+
+    <label for="area">Área:</label>
+    <select id="area" th:field="*{area.id}">
+      <option th:each="area : ${areas}" th:value="${area.id}" th:text="${area.nome}"></option>
+    </select>
+
+    <button type="submit">Salvar</button>
+  </form>
+</main>
+
+<th:block th:replace="~{fragments/footer :: footer}"></th:block>
+</body>
+</html>
