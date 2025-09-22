@@ -1,37 +1,14 @@
 <!DOCTYPE html>
-<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Motos</title>
-    <link rel="stylesheet" th:href="@{/css/main.css}">
-    <th:block th:replace="~{fragments/header :: head('Motos')}"></th:block>
+    <title>Lista de Motos</title>
 </head>
 <body>
-<th:block th:replace="~{fragments/navbar :: navbar}"></th:block>
-
-<main>
-    <h1>Lista de Motos</h1>
-    <table>
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Placa</th>
-            <th>Modelo</th>
-            <th>Área</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="moto : ${motos}">
-            <td th:text="${moto.id}"></td>
-            <td th:text="${moto.placa}"></td>
-            <td th:text="${moto.modelo}"></td>
-            <td th:text="${moto.area.nome}"></td>
-        </tr>
-        </tbody>
-    </table>
-    <a th:href="@{/motos/nova}">Nova Moto</a>
-</main>
-
-<th:block th:replace="~{fragments/footer :: footer}"></th:block>
+<h1>Motos</h1>
+<a th:href="@{/motos-page/nova}">Nova Moto</a>
+<ul>
+    <li th:each="moto : ${motos}" th:text="${moto.modelo}"></li>
+</ul>
 </body>
 </html>

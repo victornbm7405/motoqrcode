@@ -1,26 +1,16 @@
 ﻿<!DOCTYPE html>
-<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <title>Início</title>
   <link rel="stylesheet" th:href="@{/css/main.css}">
 </head>
 <body>
-
-<main class="container">
-  <h1>Bem-vindo ao Moto QRCode</h1>
-  <p>Gerencie áreas e motos de forma prática.</p>
-
-  <ul>
-    <li><a th:href="@{/usuarios}">Usuários</a></li>
-    <li><a th:href="@{/web/areas}">Áreas</a></li>
-    <li><a th:href="@{/web/motos}">Motos</a></li>
-  </ul>
-
-</main>
-
-<div class="footer">
-  <p>© 2025 Moto QRCode</p>
-</div>
+<h1>Bem-vindo ao Moto QRCode</h1>
+<nav>
+  <a th:href="@{/areas-page}">Áreas</a> |
+  <a th:href="@{/motos-page}">Motos</a> |
+  <a th:href="@{/usuarios-page}">Usuários</a>
+</nav>
 </body>
 </html>

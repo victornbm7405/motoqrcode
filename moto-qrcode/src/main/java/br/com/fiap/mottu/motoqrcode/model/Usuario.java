@@ -18,4 +18,10 @@ public class Usuario {
 
     @NotBlank @Column(nullable = false)
     private String role; // ADMIN ou USER
+
+    @Column(nullable = false)
+    private String email;
+
+    @Column(nullable = false)
+    private String nome;
 }

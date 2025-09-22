@@ -1,68 +1,39 @@
 package br.com.fiap.mottu.motoqrcode.web;
 
 import br.com.fiap.mottu.motoqrcode.model.Usuario;
-import br.com.fiap.mottu.motoqrcode.repository.UsuarioRepository;
-import jakarta.validation.Valid;
+import br.com.fiap.mottu.motoqrcode.service.UsuarioService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
 
 @Controller
-@RequestMapping("/usuarios")
+@RequestMapping("/usuarios-page")
 public class UsuarioWebController {
 
-    private final UsuarioRepository repo;
-    public UsuarioWebController(UsuarioRepository repo) { this.repo = repo; }
+    private final UsuarioService service;
+
+    public UsuarioWebController(UsuarioService service) {
+        this.service = service;
+    }
 
     @GetMapping
     public String listar(Model model) {
-        model.addAttribute("usuarios", repo.findAll());
-        return "usuarios/list";
+        List<Usuario> usuarios = service.listarTodos();
+        model.addAttribute("usuarios", usuarios);
+        return "usuarios/list"; // templates/usuarios/list.html
     }
 
     @GetMapping("/novo")
     public String novo(Model model) {
         model.addAttribute("usuario", new Usuario());
-        model.addAttribute("titulo", "Novo UsuÃ¡rio");
-        return "usuarios/form";
+        return "usuarios/form"; // templates/usuarios/form.html
     }
 
     @PostMapping
-    public String criar(@Valid @ModelAttribute("usuario") Usuario usuario,
-                        BindingResult br,
-                        RedirectAttributes ra) {
-        if (br.hasErrors()) return "usuarios/form";
-        repo.save(usuario);
-        ra.addFlashAttribute("msg", "UsuÃ¡rio criado com sucesso!");
-        return "redirect:/usuarios";
-    }
-
-    @GetMapping("/{id}/editar")
-    public String editar(@PathVariable Long id, Model model) {
-        Usuario u = repo.findById(id).orElseThrow(() -> new IllegalArgumentException("ID invÃ¡lido"));
-        model.addAttribute("usuario", u);
-        model.addAttribute("titulo", "Editar UsuÃ¡rio");
-        return "usuarios/form";
-    }
-
-    @PostMapping("/{id}/editar")
-    public String atualizar(@PathVariable Long id,
-                            @Valid @ModelAttribute("usuario") Usuario usuario,
-                            BindingResult br,
-                            RedirectAttributes ra) {
-        if (br.hasErrors()) return "usuarios/form";
-        usuario.setId(id);
-        repo.save(usuario);
-        ra.addFlashAttribute("msg", "UsuÃ¡rio atualizado com sucesso!");
-        return "redirect:/usuarios";
-    }
-
-    @PostMapping("/{id}/excluir")
-    public String excluir(@PathVariable Long id, RedirectAttributes ra) {
-        repo.deleteById(id);
-        ra.addFlashAttribute("msg", "UsuÃ¡rio excluÃ­do!");
-        return "redirect:/usuarios";
+    public String salvar(@ModelAttribute Usuario usuario) {
+        service.salvar(usuario);
+        return "redirect:/usuarios-page";
     }
 }

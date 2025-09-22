@@ -1,33 +1,14 @@
 <!DOCTYPE html>
-<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Áreas</title>
-    <link rel="stylesheet" th:href="@{/css/main.css}">
-    <th:block th:replace="~{fragments/header :: head('Áreas')}"></th:block>
+    <title>Lista de Áreas</title>
 </head>
 <body>
-<th:block th:replace="~{fragments/navbar :: navbar}"></th:block>
-
-<main>
-    <h1>Lista de Áreas</h1>
-    <table>
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Nome</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="area : ${areas}">
-            <td th:text="${area.id}"></td>
-            <td th:text="${area.nome}"></td>
-        </tr>
-        </tbody>
-    </table>
-    <a th:href="@{/areas/form}">Nova Área</a>
-</main>
-
-<th:block th:replace="~{fragments/footer :: footer}"></th:block>
+<h1>Áreas</h1>
+<a th:href="@{/areas-page/nova}">Nova Área</a>
+<ul>
+    <li th:each="area : ${areas}" th:text="${area.nome}"></li>
+</ul>
 </body>
 </html>

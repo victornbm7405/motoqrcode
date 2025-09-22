@@ -4,36 +4,36 @@ import br.com.fiap.mottu.motoqrcode.model.Area;
 import br.com.fiap.mottu.motoqrcode.service.AreaService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
-@RequestMapping("/web/areas") // <- mudamos para nao conflitar
+@RequestMapping("/areas-page")
 public class AreaWebController {
 
-    private final AreaService areaService;
+    private final AreaService service;
 
-    public AreaWebController(AreaService areaService) {
-        this.areaService = areaService;
+    public AreaWebController(AreaService service) {
+        this.service = service;
     }
 
     @GetMapping
-    public String listarAreas(Model model) {
-        model.addAttribute("areas", areaService.listarTodas());
-        return "area/list";
+    public String listar(Model model) {
+        List<Area> areas = service.listarTodas();
+        model.addAttribute("areas", areas);
+        return "area/list"; // templates/area/list.html
     }
 
     @GetMapping("/nova")
-    public String novaAreaForm(Model model) {
+    public String nova(Model model) {
         model.addAttribute("area", new Area());
-        return "area/form";
+        return "area/form"; // templates/area/form.html
     }
 
     @PostMapping
-    public String salvarArea(@ModelAttribute Area area) {
-        areaService.salvar(area);
-        return "redirect:/web/areas"; // <- ajustado
+    public String salvar(@ModelAttribute Area area) {
+        service.salvar(area);
+        return "redirect:/areas-page";
     }
 }

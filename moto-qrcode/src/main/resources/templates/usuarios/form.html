@@ -1,30 +1,19 @@
 ﻿<!DOCTYPE html>
-<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title th:text="${titulo} ?: 'Formulário'">Formulário</title>
-  <link rel="stylesheet" th:href="@{/css/main.css}">
-  <th:block th:replace="~{fragments/header :: head(${titulo} ?: 'Formulário')}"></th:block>
+  <title>Novo Usuário</title>
 </head>
 <body>
-<th:block th:replace="~{fragments/navbar :: navbar}"></th:block>
-
-<main>
-  <h1 th:text="${titulo} ?: 'Novo Usuário'"></h1>
-  <form th:action="@{/usuarios}" th:object="${usuario}" method="post">
-    <label for="username">Usuário:</label>
-    <input type="text" id="username" th:field="*{username}" />
-
-    <label for="password">Senha:</label>
-    <input type="password" id="password" th:field="*{password}" />
-
-    <label for="role">Papel:</label>
-    <input type="text" id="role" th:field="*{role}" />
-
-    <button type="submit">Salvar</button>
-  </form>
-</main>
-
-<th:block th:replace="~{fragments/footer :: footer}"></th:block>
+<h1>Novo Usuário</h1>
+<form th:action="@{/usuarios-page}" th:object="${usuario}" method="post">
+  <label for="username">Usuário:</label>
+  <input type="text" id="username" th:field="*{username}">
+  <label for="password">Senha:</label>
+  <input type="password" id="password" th:field="*{password}">
+  <label for="role">Papel:</label>
+  <input type="text" id="role" th:field="*{role}">
+  <button type="submit">Salvar</button>
+</form>
 </body>
 </html>

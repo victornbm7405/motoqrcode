@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/motos")
+@RequestMapping("/api/motos") // 👈 mudou para /api/motos
 @CrossOrigin(origins = "*")
 public class MotoController {
 

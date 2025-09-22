@@ -1,35 +1,14 @@
 ﻿<!DOCTYPE html>
-<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Usuários</title>
-  <link rel="stylesheet" th:href="@{/css/main.css}">
-  <th:block th:replace="~{fragments/header :: head('Usuários')}"></th:block>
+  <title>Lista de Usuários</title>
 </head>
 <body>
-<th:block th:replace="~{fragments/navbar :: navbar}"></th:block>
-
-<main>
-  <h1>Lista de Usuários</h1>
-  <table>
-    <thead>
-    <tr>
-      <th>ID</th>
-      <th>Nome de Usuário</th>
-      <th>Role</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="usuario : ${usuarios}">
-      <td th:text="${usuario.id}"></td>
-      <td th:text="${usuario.username}"></td>
-      <td th:text="${usuario.role}"></td>
-    </tr>
-    </tbody>
-  </table>
-  <a th:href="@{/usuarios/form}">Novo Usuário</a>
-</main>
-
-<th:block th:replace="~{fragments/footer :: footer}"></th:block>
+<h1>Usuários</h1>
+<a th:href="@{/usuarios-page/novo}">Novo Usuário</a>
+<ul>
+  <li th:each="usuario : ${usuarios}" th:text="${usuario.username}"></li>
+</ul>
 </body>
 </html>
