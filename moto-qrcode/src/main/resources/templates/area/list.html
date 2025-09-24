@@ -3,12 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <title>Lista de Áreas</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
 </head>
 <body>
-<h1>Áreas</h1>
-<a th:href="@{/areas-page/nova}">Nova Área</a>
-<ul>
-    <li th:each="area : ${areas}" th:text="${area.nome}"></li>
-</ul>
+<div class="container">
+    <h1>Áreas</h1>
+
+    <!-- Navegação -->
+    <nav class="nav">
+        <a th:href="@{/areas-page/nova}">Nova Área</a>
+        <a th:href="@{/areas-page}">Áreas</a>
+        <a th:href="@{/motos-page}">Motos</a>
+        <a th:href="@{/usuarios-page}">Usuários</a>
+    </nav>
+
+    <!-- Lista em tabela -->
+    <table>
+        <thead>
+        <tr>
+            <th>Nome da Área</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="area : ${areas}">
+            <td th:text="${area.nome}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- Rodapé -->
+    <footer class="footer">
+        <p>&copy; 2025 Moto QRCode</p>
+    </footer>
+</div>
 </body>
 </html>

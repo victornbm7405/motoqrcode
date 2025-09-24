@@ -3,12 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <title>Lista de Motos</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
 </head>
 <body>
-<h1>Motos</h1>
-<a th:href="@{/motos-page/nova}">Nova Moto</a>
-<ul>
-    <li th:each="moto : ${motos}" th:text="${moto.modelo}"></li>
-</ul>
+<div class="container">
+    <h1>Motos</h1>
+
+    <!-- Navegação -->
+    <nav class="nav">
+        <a th:href="@{/motos-page/nova}">Nova Moto</a>
+        <a th:href="@{/areas-page}">Áreas</a>
+        <a th:href="@{/motos-page}">Motos</a>
+        <a th:href="@{/usuarios-page}">Usuários</a>
+    </nav>
+
+    <!-- Tabela de motos -->
+    <table>
+        <thead>
+        <tr>
+            <th>Modelo</th>
+            <th>Placa</th>
+            <th>Ano</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="moto : ${motos}">
+            <td th:text="${moto.modelo}"></td>
+            <td th:text="${moto.placa}"></td>
+            <td th:text="${moto.ano}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- Rodapé -->
+    <footer class="footer">
+        <p>&copy; 2025 Moto QRCode</p>
+    </footer>
+</div>
 </body>
 </html>

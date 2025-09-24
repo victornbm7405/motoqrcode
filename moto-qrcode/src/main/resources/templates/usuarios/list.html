@@ -3,12 +3,29 @@
 <head>
   <meta charset="UTF-8">
   <title>Lista de Usuários</title>
+  <link rel="stylesheet" th:href="@{/css/main.css}">
 </head>
 <body>
-<h1>Usuários</h1>
-<a th:href="@{/usuarios-page/novo}">Novo Usuário</a>
-<ul>
-  <li th:each="usuario : ${usuarios}" th:text="${usuario.username}"></li>
-</ul>
+<div class="container">
+  <h1>Usuários</h1>
+
+  <!-- Barra de navegação -->
+  <nav class="nav">
+    <a th:href="@{/usuarios-page/novo}">Novo Usuário</a>
+    <a th:href="@{/areas-page}">Áreas</a>
+    <a th:href="@{/motos-page}">Motos</a>
+    <a th:href="@{/usuarios-page}">Usuários</a>
+  </nav>
+
+  <!-- Lista de usuários -->
+  <ul>
+    <li th:each="usuario : ${usuarios}" th:text="${usuario.username}"></li>
+  </ul>
+
+  <!-- Rodapé -->
+  <footer class="footer">
+    <p>&copy; 2025 Moto QRCode</p>
+  </footer>
+</div>
 </body>
 </html>

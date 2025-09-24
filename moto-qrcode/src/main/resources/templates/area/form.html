@@ -3,13 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <title>Nova Área</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
 </head>
 <body>
-<h1 th:text="${titulo} ?: 'Nova Área'"></h1>
-<form th:action="@{/areas-page}" th:object="${area}" method="post">
-    <label for="nome">Nome:</label>
-    <input type="text" id="nome" th:field="*{nome}">
-    <button type="submit">Salvar</button>
-</form>
+<div class="container">
+    <h1 th:text="${titulo} ?: 'Nova Área'"></h1>
+
+    <!-- Navegação -->
+    <nav class="nav">
+        <a th:href="@{/areas-page}">Áreas</a>
+        <a th:href="@{/motos-page}">Motos</a>
+        <a th:href="@{/usuarios-page}">Usuários</a>
+    </nav>
+
+    <!-- Formulário -->
+    <form th:action="@{/areas-page}" th:object="${area}" method="post">
+        <div class="flash">Preencha os dados da área:</div>
+
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" th:field="*{nome}">
+
+        <button type="submit">Salvar</button>
+    </form>
+
+    <!-- Rodapé -->
+    <footer class="footer">
+        <p>&copy; 2025 Moto QRCode</p>
+    </footer>
+</div>
 </body>
 </html>

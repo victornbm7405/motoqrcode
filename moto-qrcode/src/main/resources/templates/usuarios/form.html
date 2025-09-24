@@ -3,17 +3,39 @@
 <head>
   <meta charset="UTF-8">
   <title>Novo Usuário</title>
+  <link rel="stylesheet" th:href="@{/css/main.css}">
 </head>
 <body>
-<h1>Novo Usuário</h1>
-<form th:action="@{/usuarios-page}" th:object="${usuario}" method="post">
-  <label for="username">Usuário:</label>
-  <input type="text" id="username" th:field="*{username}">
-  <label for="password">Senha:</label>
-  <input type="password" id="password" th:field="*{password}">
-  <label for="role">Papel:</label>
-  <input type="text" id="role" th:field="*{role}">
-  <button type="submit">Salvar</button>
-</form>
+<div class="container">
+  <h1>Novo Usuário</h1>
+
+  <!-- Navegação -->
+  <nav class="nav">
+    <a th:href="@{/areas-page}">Áreas</a>
+    <a th:href="@{/motos-page}">Motos</a>
+    <a th:href="@{/usuarios-page}">Usuários</a>
+  </nav>
+
+  <!-- Formulário -->
+  <form th:action="@{/usuarios-page}" th:object="${usuario}" method="post">
+    <div class="flash">Preencha os dados do novo usuário:</div>
+
+    <label for="username">Usuário:</label>
+    <input type="text" id="username" th:field="*{username}">
+
+    <label for="password">Senha:</label>
+    <input type="password" id="password" th:field="*{password}">
+
+    <label for="role">Papel:</label>
+    <input type="text" id="role" th:field="*{role}">
+
+    <button type="submit">Salvar</button>
+  </form>
+
+  <!-- Rodapé -->
+  <footer class="footer">
+    <p>&copy; 2025 Moto QRCode</p>
+  </footer>
+</div>
 </body>
 </html>
