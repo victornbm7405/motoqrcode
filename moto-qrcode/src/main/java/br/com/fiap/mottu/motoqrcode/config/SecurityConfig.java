@@ -1,64 +1,75 @@
 package br.com.fiap.mottu.motoqrcode.config;
 
-import br.com.fiap.mottu.motoqrcode.service.UsuarioDetailsServiceImpl;
-import jakarta.annotation.PostConstruct;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder; // DEV/APRENDIZADO
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
+@EnableMethodSecurity
 public class SecurityConfig {
 
-    private final UsuarioDetailsServiceImpl usuarioDetailsService;
-    private final PasswordEncoder passwordEncoder; // 👈 injeta o encoder
+    private final UserDetailsService uds;
 
-    public SecurityConfig(UsuarioDetailsServiceImpl usuarioDetailsService, PasswordEncoder passwordEncoder) {
-        this.usuarioDetailsService = usuarioDetailsService;
-        this.passwordEncoder = passwordEncoder;
+    public SecurityConfig(UserDetailsService uds) {
+        this.uds = uds;
     }
 
-    // ⚠️ Senha em texto puro (apenas para DEV/TESTE)
-    @Bean
-    public static PasswordEncoder passwordEncoder() {
+    @Bean @SuppressWarnings("deprecation")
+    public PasswordEncoder passwordEncoder() {
+        // ATENÇÃO: senha em texto puro só para ambiente acadêmico/dev.
         return NoOpPasswordEncoder.getInstance();
     }
 
-    // 🔍 Diagnóstico: mostrar qual encoder foi carregado
-    @PostConstruct
-    public void checkEncoder() {
-        System.out.println("🔥 PasswordEncoder em uso: " + passwordEncoder.getClass().getName());
+    @Bean
+    public DaoAuthenticationProvider authProvider() {
+        DaoAuthenticationProvider p = new DaoAuthenticationProvider();
+        p.setUserDetailsService(uds);
+        p.setPasswordEncoder(passwordEncoder());
+        return p;
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
-    }
-
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                .authenticationProvider(authProvider())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
-                        .requestMatchers("/login", "/h2-console/**").permitAll()
+                        // públicos
+                        .requestMatchers("/css/**","/js/**","/images/**","/login","/error").permitAll()
+
+                        // LEITURA (GET): ADMIN e USER
+                        .requestMatchers(HttpMethod.GET,
+                                "/",
+                                "/areas/**",
+                                "/motos/**",
+                                "/usuarios/**",
+                                "/api/**"
+                        ).hasAnyRole("ADMIN","USER")
+
+                        // ESCRITA (POST/PUT/PATCH/DELETE): apenas ADMIN
+                        .requestMatchers(HttpMethod.POST,   "/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT,    "/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PATCH,  "/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/**").hasRole("ADMIN")
+
+                        // fallback
                         .anyRequest().authenticated()
                 )
-                .formLogin(form -> form
+                .formLogin(fl -> fl
                         .loginPage("/login")
+                        .loginProcessingUrl("/login")
                         .defaultSuccessUrl("/", true)
                         .permitAll()
                 )
-                .logout(logout -> logout
-                        .logoutSuccessUrl("/login?logout")
-                        .permitAll()
-                );
-
-        http.csrf(csrf -> csrf.disable());
-        http.headers(headers -> headers.frameOptions(frame -> frame.disable()));
+                .logout(l -> l.logoutUrl("/logout").logoutSuccessUrl("/login?logout").permitAll())
+                .csrf(Customizer.withDefaults()); // CSRF ON p/ forms Thymeleaf
 
         return http.build();
     }
