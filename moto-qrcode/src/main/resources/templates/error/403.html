@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"><title>Acesso negado</title>
+  <style>body{font-family:sans-serif;max-width:720px;margin:4rem auto} a{display:inline-block;margin-top:1rem}</style>
+</head>
+<body>
+  <h1>403 — Acesso negado</h1>
+  <p>Você não tem permissão para executar esta ação.</p>
+  <p th:if="${message != null}" th:text="${message}"></p>
+  <a th:href="@{/}">Voltar para a página inicial</a>
+</body>
+</html>
