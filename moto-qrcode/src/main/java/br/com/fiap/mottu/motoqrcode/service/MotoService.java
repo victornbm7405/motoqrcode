@@ -68,4 +68,10 @@ public class MotoService {
     public List<Moto> listarTodas() {
         return motoRepository.findAll();
     }
+
+    public Moto buscarPorId(Long id) {
+        return motoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Moto não encontrada"));
+    }
+
 }

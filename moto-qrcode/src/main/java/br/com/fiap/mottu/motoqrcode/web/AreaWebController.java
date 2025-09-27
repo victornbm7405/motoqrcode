@@ -2,11 +2,10 @@ package br.com.fiap.mottu.motoqrcode.web;
 
 import br.com.fiap.mottu.motoqrcode.model.Area;
 import br.com.fiap.mottu.motoqrcode.service.AreaService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Controller
 @RequestMapping("/areas-page")
@@ -18,13 +17,14 @@ public class AreaWebController {
         this.service = service;
     }
 
+    @ModelAttribute("requestPath")
+    String requestPath(HttpServletRequest req) {
+        return req.getRequestURI();
+    }
+
     @GetMapping
     public String listar(Model model) {
-        List<Area> areas = service.listarTodas();
-        model.addAttribute("areas", areas);
-        Area ativa = null;
-        try { ativa = service.getAreaAtiva(); } catch (RuntimeException ignored) {}
-        model.addAttribute("areaAtiva", ativa);
+        model.addAttribute("areas", service.listarTodas());
         return "area/list"; // templates/area/list.html
     }
 
@@ -40,16 +40,21 @@ public class AreaWebController {
         return "redirect:/areas-page";
     }
 
-    // NOVO: ativar/desativar via web (mínima intervenção)
-    @GetMapping("/ativar/{id}")
-    public String ativar(@PathVariable Long id) {
-        service.selecionarArea(id);
+    @GetMapping("/{id}/editar")
+    public String editar(@PathVariable Long id, Model model) {
+        model.addAttribute("area", service.buscarPorId(id));
+        return "area/form"; // reutiliza o mesmo form
+    }
+
+    @PostMapping("/{id}")
+    public String atualizar(@PathVariable Long id, @ModelAttribute Area form) {
+        service.atualizar(id, form); // adicionamos este método no service
         return "redirect:/areas-page";
     }
 
-    @GetMapping("/desativar")
-    public String desativar() {
-        try { service.selecionarArea(null); } catch (Exception ignored) {}
+    @PostMapping("/{id}/excluir")
+    public String excluir(@PathVariable Long id) {
+        service.deletar(id); // adicionamos este método no service
         return "redirect:/areas-page";
     }
 }

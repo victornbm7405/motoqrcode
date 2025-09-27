@@ -43,4 +43,15 @@ public class AreaService {
         todas.forEach(a -> System.out.println("- ID: " + a.getId() + " | Nome: " + a.getNome()));
         return todas;
     }
+
+    public Area atualizar(Long id, Area dados) {
+        Area existente = buscarPorId(id);
+        existente.setNome(dados.getNome());
+        return repository.save(existente);
+    }
+
+    public void deletar(Long id) {
+        repository.deleteById(id);
+    }
+
 }

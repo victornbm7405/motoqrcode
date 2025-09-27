@@ -37,4 +37,32 @@ public class MotoWebController {
         service.salvar(dto);
         return "redirect:/motos-page";
     }
+
+    @GetMapping("/{id}/editar")
+    public String editar(@PathVariable Long id, Model model) {
+        var moto = service.buscarPorId(id); // usa o método adicionado acima
+
+        MotoDTO dto = new MotoDTO();
+        dto.setPlaca(moto.getPlaca());
+        dto.setModelo(moto.getModelo());
+        dto.setIdArea(moto.getArea() != null ? moto.getArea().getId() : null);
+
+        model.addAttribute("moto", dto);
+        model.addAttribute("areas", areaService.listarTodas());
+        model.addAttribute("motoId", id); // usamos isso na action do form
+        return "moto/form";
+    }
+
+    @PostMapping("/{id}")
+    public String atualizar(@PathVariable Long id, @ModelAttribute MotoDTO dto) {
+        service.atualizar(id, dto); // já existe no seu service
+        return "redirect:/motos-page";
+    }
+
+    @PostMapping("/{id}/excluir")
+    public String excluir(@PathVariable Long id) {
+        service.deletar(id); // já existe no seu service
+        return "redirect:/motos-page";
+    }
+
 }
