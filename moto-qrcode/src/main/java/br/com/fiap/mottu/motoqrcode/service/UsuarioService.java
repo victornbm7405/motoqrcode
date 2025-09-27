@@ -16,39 +16,48 @@ public class UsuarioService {
         this.repository = repository;
     }
 
-    // Listar todos
     public List<Usuario> listarTodos() {
         return repository.findAll();
     }
 
-    // Buscar por ID
     public Optional<Usuario> buscarPorId(Long id) {
         return repository.findById(id);
     }
 
-    // Buscar por username
     public Optional<Usuario> buscarPorUsername(String username) {
         return repository.findByUsername(username);
     }
 
-    // Salvar
     public Usuario salvar(Usuario usuario) {
+        // Se quiser garantir role upper-case:
+        if (usuario.getRole() != null) {
+            usuario.setRole(usuario.getRole().toUpperCase());
+        }
         return repository.save(usuario);
     }
 
-    // Atualizar
     public Usuario atualizar(Long id, Usuario usuario) {
         return repository.findById(id)
                 .map(existente -> {
                     existente.setUsername(usuario.getUsername());
-                    existente.setPassword(usuario.getPassword());
-                    existente.setRole(usuario.getRole());
+                    existente.setEmail(usuario.getEmail());
+                    existente.setNome(usuario.getNome());
+
+                    // Atualiza role (em upper-case por conferência)
+                    if (usuario.getRole() != null) {
+                        existente.setRole(usuario.getRole().toUpperCase());
+                    }
+
+                    // Se a senha vier vazia/nula, manter a atual
+                    if (usuario.getPassword() != null && !usuario.getPassword().isBlank()) {
+                        existente.setPassword(usuario.getPassword());
+                    }
+
                     return repository.save(existente);
                 })
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado com id: " + id));
     }
 
-    // Deletar
     public void deletar(Long id) {
         repository.deleteById(id);
     }

@@ -2,30 +2,76 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Lista de Usuários</title>
+  <title>Usuários • Mottu</title>
   <link rel="stylesheet" th:href="@{/css/main.css}">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-<body>
-<div class="container">
-  <h1>Usuários</h1>
+<body th:with="uri=${requestPath}">
 
-  <!-- Barra de navegação -->
-  <nav class="nav">
-    <a th:href="@{/usuarios-page/novo}">Novo Usuário</a>
-    <a th:href="@{/areas-page}">Áreas</a>
-    <a th:href="@{/motos-page}">Motos</a>
-    <a th:href="@{/usuarios-page}">Usuários</a>
-  </nav>
+<!-- NAVBAR -->
+<div class="nav">
+  <a th:href="@{/areas-page}"
+     th:classappend="${uri != null and uri.startsWith('/areas-page')} ? ' active' : ''">Áreas</a>
 
-  <!-- Lista de usuários -->
-  <ul>
-    <li th:each="usuario : ${usuarios}" th:text="${usuario.username}"></li>
-  </ul>
+  <a th:href="@{/motos-page}"
+     th:classappend="${uri != null and uri.startsWith('/motos-page')} ? ' active' : ''">Motos</a>
 
-  <!-- Rodapé -->
-  <footer class="footer">
-    <p>&copy; 2025 Moto QRCode</p>
-  </footer>
+  <a th:href="@{/qrcode}"
+     th:classappend="${uri != null and uri.startsWith('/qrcode')} ? ' active' : ''">Leitor QR</a>
+
+  <a th:href="@{/usuarios-page}"
+     th:classappend="${uri != null and uri.startsWith('/usuarios-page')} ? ' active' : ''">Usuários</a>
+
+  <span class="spacer"></span>
+
+  <form th:action="@{/logout}" method="post">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+    <button class="btn btn-sm" type="submit">Sair</button>
+  </form>
 </div>
+
+<!-- CONTEÚDO -->
+<div class="container">
+  <h1 class="section-title">Usuários</h1>
+
+  <div class="mt-12 flex gap-12">
+    <a class="btn btn-primary" th:href="@{/usuarios-page/novo}">Novo Usuário</a>
+  </div>
+
+  <table class="mt-12">
+    <thead>
+    <tr>
+      <th>Username</th>
+      <th>Nome</th>
+      <th>Email</th>
+      <th>Papel</th>
+      <th style="width:180px;">Ações</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="u : ${usuarios}">
+      <td th:text="${u.username}">user</td>
+      <td th:text="${u.nome}">Fulano</td>
+      <td th:text="${u.email}">fulano@exemplo.com</td>
+      <td th:text="${u.role}">USER</td>
+      <td>
+        <a class="btn btn-sm" th:href="@{'/usuarios-page/' + ${u.id} + '/editar'}">Editar</a>
+
+        <form th:action="@{'/usuarios-page/' + ${u.id}}"
+              method="post"
+              style="display:inline-block; margin-left:8px;"
+              onsubmit="return confirm('Confirma excluir este usuário?');">
+          <input type="hidden" name="_method" value="delete">
+          <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+          <button class="btn btn-sm btn-danger" type="submit">Excluir</button>
+        </form>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <div class="footer">© Mottu • Painel Operacional</div>
+</div>
+
 </body>
 </html>
