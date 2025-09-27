@@ -22,6 +22,9 @@ public class AreaWebController {
     public String listar(Model model) {
         List<Area> areas = service.listarTodas();
         model.addAttribute("areas", areas);
+        Area ativa = null;
+        try { ativa = service.getAreaAtiva(); } catch (RuntimeException ignored) {}
+        model.addAttribute("areaAtiva", ativa);
         return "area/list"; // templates/area/list.html
     }
 
@@ -34,6 +37,19 @@ public class AreaWebController {
     @PostMapping
     public String salvar(@ModelAttribute Area area) {
         service.salvar(area);
+        return "redirect:/areas-page";
+    }
+
+    // NOVO: ativar/desativar via web (mínima intervenção)
+    @GetMapping("/ativar/{id}")
+    public String ativar(@PathVariable Long id) {
+        service.selecionarArea(id);
+        return "redirect:/areas-page";
+    }
+
+    @GetMapping("/desativar")
+    public String desativar() {
+        try { service.selecionarArea(null); } catch (Exception ignored) {}
         return "redirect:/areas-page";
     }
 }

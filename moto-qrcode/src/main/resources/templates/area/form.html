@@ -2,34 +2,46 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Nova Área</title>
+    <title>Nova Área • Mottu</title>
     <link rel="stylesheet" th:href="@{/css/main.css}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-<div class="container">
-    <h1 th:text="${titulo} ?: 'Nova Área'"></h1>
 
-    <!-- Navegação -->
-    <nav class="nav">
-        <a th:href="@{/areas-page}">Áreas</a>
-        <a th:href="@{/motos-page}">Motos</a>
-        <a th:href="@{/usuarios-page}">Usuários</a>
-    </nav>
+<!-- NAVBAR -->
+<div class="nav" th:with="uri=${requestPath}">
+    <a th:href="@{/areas-page}"
+       th:classappend="${uri.startsWith('/areas-page')} ? ' active' : ''">Áreas</a>
 
-    <!-- Formulário -->
-    <form th:action="@{/areas-page}" th:object="${area}" method="post">
-        <div class="flash">Preencha os dados da área:</div>
+    <a th:href="@{/motos-page}"
+       th:classappend="${uri.startsWith('/motos-page')} ? ' active' : ''">Motos</a>
 
-        <label for="nome">Nome:</label>
-        <input type="text" id="nome" th:field="*{nome}">
-
-        <button type="submit">Salvar</button>
-    </form>
-
-    <!-- Rodapé -->
-    <footer class="footer">
-        <p>&copy; 2025 Moto QRCode</p>
-    </footer>
+    <a th:href="@{/qrcode}"
+       th:classappend="${uri.startsWith('/qrcode')} ? ' active' : ''">Leitor QR</a>
 </div>
+
+
+<!-- CONTEÚDO -->
+<div class="container">
+    <div class="card">
+        <h1 class="section-title">Nova Área</h1>
+
+        <form th:action="@{/areas-page}" th:object="${area}" method="post" class="mt-12">
+            <!-- CSRF (necessário com Spring Security) -->
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+            <label for="nome">Nome</label>
+            <input type="text" id="nome" th:field="*{nome}" required>
+
+            <div class="form-actions">
+                <button class="btn btn-primary" type="submit">Salvar</button>
+                <a class="btn" th:href="@{/areas-page}">Voltar</a>
+            </div>
+        </form>
+    </div>
+
+    <div class="footer">© Mottu • Painel Operacional</div>
+</div>
+
 </body>
 </html>

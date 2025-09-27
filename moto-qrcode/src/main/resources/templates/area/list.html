@@ -2,39 +2,62 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Lista de Áreas</title>
+    <title>Áreas • Mottu</title>
     <link rel="stylesheet" th:href="@{/css/main.css}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
+
+<!-- NAVBAR -->
+<div class="nav" th:with="uri=${requestPath}">
+    <a th:href="@{/areas-page}"
+       th:classappend="${uri.startsWith('/areas-page')} ? ' active' : ''">Áreas</a>
+
+    <a th:href="@{/motos-page}"
+       th:classappend="${uri.startsWith('/motos-page')} ? ' active' : ''">Motos</a>
+
+    <a th:href="@{/qrcode}"
+       th:classappend="${uri.startsWith('/qrcode')} ? ' active' : ''">Leitor QR</a>
+</div>
+
+
+<!-- CONTEÚDO -->
 <div class="container">
-    <h1>Áreas</h1>
+    <h1 class="section-title">Áreas</h1>
 
-    <!-- Navegação -->
-    <nav class="nav">
-        <a th:href="@{/areas-page/nova}">Nova Área</a>
-        <a th:href="@{/areas-page}">Áreas</a>
-        <a th:href="@{/motos-page}">Motos</a>
-        <a th:href="@{/usuarios-page}">Usuários</a>
-    </nav>
+    <!-- Indicador de área ativa -->
+    <p class="subtle">
+    <span th:if="${areaAtiva != null}" class="badge badge-active">
+      Ativa: <span th:text="${areaAtiva.nome}"></span>
+      &nbsp;(<a th:href="@{/areas-page/desativar}">desativar</a>)
+    </span>
+        <span th:if="${areaAtiva == null}" class="badge badge-muted">Nenhuma área ativa selecionada</span>
+    </p>
 
-    <!-- Lista em tabela -->
-    <table>
+    <!-- Ações -->
+    <div class="mt-12 flex gap-12">
+        <a class="btn btn-primary" th:href="@{/areas-page/nova}">Nova Área</a>
+        <a class="btn" th:href="@{/motos-page}">Motos</a>
+        <a class="btn" th:href="@{/qrcode}">Leitor QR (Web)</a>
+    </div>
+
+    <!-- Tabela -->
+    <table class="mt-12">
         <thead>
-        <tr>
-            <th>Nome da Área</th>
-        </tr>
+        <tr><th>Nome</th><th style="width:160px;">Ações</th></tr>
         </thead>
         <tbody>
         <tr th:each="area : ${areas}">
             <td th:text="${area.nome}"></td>
+            <td>
+                <a class="btn" th:href="@{'/areas-page/ativar/' + ${area.id}}">Ativar</a>
+            </td>
         </tr>
         </tbody>
     </table>
 
-    <!-- Rodapé -->
-    <footer class="footer">
-        <p>&copy; 2025 Moto QRCode</p>
-    </footer>
+    <div class="footer">© Mottu • Painel Operacional</div>
 </div>
+
 </body>
 </html>

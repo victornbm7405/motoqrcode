@@ -16,50 +16,49 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    private final UserDetailsService uds;
+    private final UserDetailsService userDetailsService;
 
-    public SecurityConfig(UserDetailsService uds) {
-        this.uds = uds;
+    public SecurityConfig(UserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
     }
 
-    @Bean @SuppressWarnings("deprecation")
-    public PasswordEncoder passwordEncoder() {
-        // ATENÇÃO: senha em texto puro só para ambiente acadêmico/dev.
+    @Bean
+    PasswordEncoder passwordEncoder() {
+        // para ambiente acadêmico; em produção use BCryptPasswordEncoder
         return NoOpPasswordEncoder.getInstance();
     }
 
     @Bean
-    public DaoAuthenticationProvider authProvider() {
-        DaoAuthenticationProvider p = new DaoAuthenticationProvider();
-        p.setUserDetailsService(uds);
-        p.setPasswordEncoder(passwordEncoder());
-        return p;
+    DaoAuthenticationProvider authProvider(PasswordEncoder encoder) {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(userDetailsService);
+        provider.setPasswordEncoder(encoder);
+        return provider;
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .authenticationProvider(authProvider())
                 .authorizeHttpRequests(auth -> auth
-                        // públicos
+                        // estáticos e login públicos
                         .requestMatchers("/css/**","/js/**","/images/**","/login","/error").permitAll()
 
-                        // LEITURA (GET): ADMIN e USER
-                        .requestMatchers(HttpMethod.GET,
-                                "/",
-                                "/areas/**",
-                                "/motos/**",
-                                "/usuarios/**",
-                                "/api/**"
-                        ).hasAnyRole("ADMIN","USER")
+                        // >>> exceções para o fluxo do QR (scanner desktop e REST existente)
+                        .requestMatchers(HttpMethod.POST, "/api/motos/qrcode").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/motos/qrcode").permitAll()
 
-                        // ESCRITA (POST/PUT/PATCH/DELETE): apenas ADMIN
+                        // páginas Thymeleaf (GET) — USER e ADMIN
+                        .requestMatchers(HttpMethod.GET, "/", "/areas-page/**", "/motos-page/**", "/usuarios-page/**").hasAnyRole("ADMIN","USER")
+
+                        // APIs de leitura — USER e ADMIN
+                        .requestMatchers(HttpMethod.GET, "/api/**").hasAnyRole("ADMIN","USER")
+
+                        // escritas em geral — só ADMIN
                         .requestMatchers(HttpMethod.POST,   "/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT,    "/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PATCH,  "/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/**").hasRole("ADMIN")
 
-                        // fallback
                         .anyRequest().authenticated()
                 )
                 .formLogin(fl -> fl

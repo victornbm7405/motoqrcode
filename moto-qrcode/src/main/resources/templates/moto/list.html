@@ -2,43 +2,54 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Lista de Motos</title>
+    <title>Motos • Mottu</title>
     <link rel="stylesheet" th:href="@{/css/main.css}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
+
+<!-- NAVBAR -->
+<div class="nav" th:with="uri=${requestPath}">
+    <a th:href="@{/areas-page}"
+       th:classappend="${uri.startsWith('/areas-page')} ? ' active' : ''">Áreas</a>
+
+    <a th:href="@{/motos-page}"
+       th:classappend="${uri.startsWith('/motos-page')} ? ' active' : ''">Motos</a>
+
+    <a th:href="@{/qrcode}"
+       th:classappend="${uri.startsWith('/qrcode')} ? ' active' : ''">Leitor QR</a>
+</div>
+
+
+<!-- CONTEÚDO -->
 <div class="container">
-    <h1>Motos</h1>
+    <h1 class="section-title">Motos</h1>
 
-    <!-- Navegação -->
-    <nav class="nav">
-        <a th:href="@{/motos-page/nova}">Nova Moto</a>
-        <a th:href="@{/areas-page}">Áreas</a>
-        <a th:href="@{/motos-page}">Motos</a>
-        <a th:href="@{/usuarios-page}">Usuários</a>
-    </nav>
+    <div class="mt-12 flex gap-12">
+        <a class="btn btn-primary" th:href="@{/motos-page/nova}">Nova Moto</a>
+        <a class="btn" th:href="@{/areas-page}">Áreas</a>
+        <a class="btn" th:href="@{/qrcode}">Leitor QR (Web)</a>
+    </div>
 
-    <!-- Tabela de motos -->
-    <table>
+    <table class="mt-12">
         <thead>
         <tr>
-            <th>Modelo</th>
             <th>Placa</th>
-            <th>Ano</th>
+            <th>Modelo</th>
+            <th>Área</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="moto : ${motos}">
-            <td th:text="${moto.modelo}"></td>
-            <td th:text="${moto.placa}"></td>
-            <td th:text="${moto.ano}"></td>
+            <td th:text="${moto.placa}">ABC1D23</td>
+            <td th:text="${moto.modelo}">CG 160</td>
+            <td th:text="${moto.area != null ? moto.area.nome : '—'}">Centro</td>
         </tr>
         </tbody>
     </table>
 
-    <!-- Rodapé -->
-    <footer class="footer">
-        <p>&copy; 2025 Moto QRCode</p>
-    </footer>
+    <div class="footer">© Mottu • Painel Operacional</div>
 </div>
+
 </body>
 </html>

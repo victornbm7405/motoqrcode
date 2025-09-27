@@ -2,18 +2,40 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Início</title>
+  <title>Início • Mottu</title>
   <link rel="stylesheet" th:href="@{/css/main.css}">
 </head>
 <body>
-<div class="container">
-  <h1>Bem-vindo ao Moto QRCode</h1>
 
-  <nav class="nav">
-    <a th:href="@{/areas-page}">Áreas</a>
-    <a th:href="@{/motos-page}">Motos</a>
-    <a th:href="@{/usuarios-page}">Usuários</a>
-  </nav>
+<!-- NAVBAR -->
+<div class="nav" th:with="uri=${requestPath}">
+  <a th:href="@{/areas-page}"
+     th:classappend="${uri.startsWith('/areas-page')} ? ' active' : ''">Áreas</a>
+
+  <a th:href="@{/motos-page}"
+     th:classappend="${uri.startsWith('/motos-page')} ? ' active' : ''">Motos</a>
+
+  <a th:href="@{/qrcode}"
+     th:classappend="${uri.startsWith('/qrcode')} ? ' active' : ''">Leitor QR</a>
 </div>
+
+
+<!-- CONTEÚDO -->
+<div class="container">
+  <div class="card">
+    <h1 class="section-title">Bem-vindo ao Moto QRCode</h1>
+    <p class="subtle">Gerencie áreas, cadastre motos e use o leitor de QR Code direto do navegador.</p>
+
+    <div class="mt-16 flex gap-12">
+      <a class="btn btn-primary" th:href="@{/qrcode}">Abrir Leitor QR</a>
+      <a class="btn" th:href="@{/areas-page}">Gerenciar Áreas</a>
+      <a class="btn" th:href="@{/motos-page}">Ver Motos</a>
+      <a class="btn" th:href="@{/usuarios-page}">Usuários</a>
+    </div>
+  </div>
+
+  <div class="footer">© Mottu • Painel Operacional</div>
+</div>
+
 </body>
 </html>

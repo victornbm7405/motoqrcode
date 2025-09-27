@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Leitor de QR Code • Mottu</title>
+
+    <!-- Estilos -->
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- CSRF -->
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
+    <!-- Leitor de QR via navegador -->
+    <script src="https://unpkg.com/html5-qrcode" defer></script>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<div class="nav" th:with="uri=${requestPath}">
+    <a th:href="@{/areas-page}"
+       th:classappend="${uri.startsWith('/areas-page')} ? ' active' : ''">Áreas</a>
+
+    <a th:href="@{/motos-page}"
+       th:classappend="${uri.startsWith('/motos-page')} ? ' active' : ''">Motos</a>
+
+    <a th:href="@{/qrcode}"
+       th:classappend="${uri.startsWith('/qrcode')} ? ' active' : ''">Leitor QR</a>
+</div>
+
+
+<!-- CONTEÚDO -->
+<div class="container">
+    <div class="card">
+        <h1 class="section-title">Leitor de QR Code (Web)</h1>
+        <p class="subtle">Posicione o QR code da moto na câmera. Ao ler, enviaremos automaticamente usando a <b>Área Ativa</b>.</p>
+
+        <div class="mt-16">
+            <div id="reader" style="width:100%; max-width:480px;"></div>
+
+            <div id="result" class="mt-12 subtle" style="white-space:pre-wrap;"></div>
+
+            <div class="form-actions">
+                <button id="restartBtn" class="btn btn-primary" disabled>Reiniciar leitura</button>
+                <a class="btn" th:href="@{/motos-page}">Voltar para Motos</a>
+                <a class="btn" th:href="@{/areas-page}">Selecionar Área Ativa</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">© Mottu • Painel Operacional</div>
+</div>
+
+<!-- SCRIPT -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const csrfToken  = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+        const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+
+        const resultEl   = document.getElementById('result');
+        const restartBtn = document.getElementById('restartBtn');
+
+        // Inicializa o leitor
+        const html5Qrcode = new Html5Qrcode("reader");
+
+        async function startScanner() {
+            resultEl.textContent = "Abrindo câmera...";
+            restartBtn.disabled = true;
+
+            try {
+                const cameras = await Html5Qrcode.getCameras();
+                const camId = cameras?.[0]?.id;
+                if (!camId) {
+                    resultEl.textContent = "Nenhuma câmera encontrada.";
+                    return;
+                }
+
+                await html5Qrcode.start(
+                    camId,
+                    { fps: 10, qrbox: { width: 240, height: 240 } },
+                    onScanSuccess,
+                    onScanFailure
+                );
+                resultEl.textContent = "Lendo... aponte o QR para a câmera.";
+            } catch (e) {
+                resultEl.textContent = "Erro ao iniciar a câmera: " + e;
+            }
+        }
+
+        function onScanFailure(_) {
+            // Ignora frames sem QR
+        }
+
+        async function onScanSuccess(decodedText, _) {
+            // Para a câmera imediatamente após um sucesso
+            try { await html5Qrcode.stop(); } catch (_) {}
+
+            let payload;
+            try {
+                // Espera um JSON com { placa, modelo }
+                payload = JSON.parse(decodedText);
+            } catch (e) {
+                resultEl.textContent = "QR lido, mas não é um JSON válido. Conteúdo:\n" + decodedText;
+                restartBtn.disabled = false;
+                return;
+            }
+
+            resultEl.textContent = "QR lido:\n" + JSON.stringify(payload, null, 2) + "\n\nEnviando ao servidor...";
+
+            try {
+                const resp = await fetch("/qrcode/submit", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        [csrfHeader]: csrfToken
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!resp.ok) {
+                    const txt = await resp.text();
+                    throw new Error("Falha ao salvar: " + resp.status + " - " + txt);
+                }
+
+                const data = await resp.json();
+                resultEl.textContent = "Sucesso! Moto salva:\n" + JSON.stringify(data, null, 2);
+            } catch (e) {
+                resultEl.textContent = "Erro ao enviar: " + e.message +
+                    "\n\nDica: verifique se há uma Área Ativa selecionada em /areas-page.";
+            } finally {
+                restartBtn.disabled = false;
+            }
+        }
+
+        restartBtn.addEventListener('click', startScanner);
+        startScanner();
+    });
+</script>
+</body>
+</html>
