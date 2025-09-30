@@ -6,7 +6,10 @@
     <link rel="stylesheet" th:href="@{/css/main.css}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-<body th:with="uri=${requestPath}">
+<body th:with="
+    uri=${requestPath},
+    areaAtiva=${areaAtiva} ?: ${session.areaAtiva}
+">
 <!-- NAVBAR -->
 <div class="nav">
     <a th:href="@{/areas-page}"
@@ -15,6 +18,9 @@
        th:classappend="${uri != null and uri.startsWith('/motos-page')} ? ' active' : ''">Motos</a>
     <a th:href="@{/qrcode}"
        th:classappend="${uri != null and uri.startsWith('/qrcode')} ? ' active' : ''">Leitor QR</a>
+
+    <span class="ml-auto badge"
+          th:text="${areaAtiva != null} ? ${areaAtiva.nome} : 'Área não selecionada'">Área não selecionada</span>
 </div>
 
 <div class="container">
@@ -29,7 +35,12 @@
             <label for="nome">Nome</label>
             <input id="nome" th:field="*{nome}" required>
 
-            <!-- Se sua entidade tiver mais campos (lat/lng/raio etc.), adicione aqui -->
+            <!-- Dica sobre a área ativa (só informativo) -->
+            <p class="muted mt-8">
+                A área ativa atual é:
+                <strong th:text="${areaAtiva != null} ? ${areaAtiva.nome} : 'nenhuma'">nenhuma</strong>.
+                Você pode alterá-la na lista de Áreas.
+            </p>
 
             <div class="form-actions">
                 <button class="btn btn-primary" type="submit">Salvar</button>

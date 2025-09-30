@@ -57,4 +57,19 @@ public class AreaWebController {
         service.deletar(id); // adicionamos este método no service
         return "redirect:/areas-page";
     }
+
+    // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    // NOVO ENDPOINT: definir Área Ativa (sem alterar nada do restante)
+    // POST /areas-page/ativa  (parâmetro: areaId)
+    // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    @PostMapping("/ativa")
+    public String definirAtiva(@RequestParam("areaId") Long areaId,
+                               org.springframework.web.servlet.mvc.support.RedirectAttributes ra) {
+        service.selecionarArea(areaId); // grava a ativa em memória
+        ra.addFlashAttribute("msgSucesso", "Área ativa definida: " + service.getAreaAtiva().getNome());
+        return "redirect:/areas-page";
+    }
+
+
+
 }
