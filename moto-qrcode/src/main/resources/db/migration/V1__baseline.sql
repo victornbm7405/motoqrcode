@@ -1,5 +1,5 @@
 -- Baseline inicial
-BEGIN
-NULL;
-END;
-/
+--BEGIN
+--NULL;
+--END;
+--/
